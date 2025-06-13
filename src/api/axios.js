@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'http://tradex-backend.onrender.com/api',
+  baseURL: 'https://tradex-backend.onrender.com/api',
 });
 
 instance.interceptors.request.use((config) => {
