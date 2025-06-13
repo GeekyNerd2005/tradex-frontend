@@ -51,7 +51,7 @@ export default function TradingChartPage() {
       setLoading(true);
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        `http://localhost:5001/api/market/candles/${symbol}?range=${range}&interval=${interval}`,
+        `http://tradex-backend.onrender.com/api/market/candles/${symbol}?range=${range}&interval=${interval}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

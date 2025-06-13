@@ -21,7 +21,7 @@ export default function RegistrationPage() {
 
     setLoading(true);
     try {
-      await axios.post("http://localhost:5001/api/auth/register", {
+      await axios.post("http://tradex-backend.onrender.com/api/auth/register", {
         username,
         password,
       });

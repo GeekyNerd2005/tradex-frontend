@@ -28,7 +28,7 @@ const PortfolioValueChart = ({ range = "3mo" }) => {
     const token = localStorage.getItem("token");
 
     try {
-      const res = await fetch(`http://localhost:5001/api/portfolio/value-history/${userId}`, {
+      const res = await fetch(`http://tradex-backend.onrender.com/api/portfolio/value-history/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -36,7 +36,7 @@ export default function MyOrdersPage() {
     setError("");
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:5001/api/Orders/history", {
+      const response = await axios.get("http://tradex-backend.onrender.com/api/Orders/history", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setOrders(response.data);
@@ -55,7 +55,7 @@ export default function MyOrdersPage() {
     setCancelStatus("");
     try {
       const token = localStorage.getItem("token");
-      await axios.post(`http://localhost:5001/api/Orders/cancel/${orderId}`, {}, {
+      await axios.post(`http://tradex-backend.onrender.com/api/Orders/cancel/${orderId}`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCancelStatus(`✅ Order #${orderId} cancelled successfully.`);

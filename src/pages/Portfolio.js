@@ -11,7 +11,7 @@ const Portfolio = () => {
     const fetchHoldings = async () => {
       const token = localStorage.getItem("token");
       try {
-        const res = await fetch("http://localhost:5001/api/portfolio", {
+        const res = await fetch("http://tradex-backend.onrender.com/api/portfolio", {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res.ok) {
@@ -27,7 +27,7 @@ const Portfolio = () => {
 
   useEffect(() => {
     const connection = new HubConnectionBuilder()
-      .withUrl("http://localhost:5001/hubs/portfolio", {
+      .withUrl("http://tradex-backend.onrender.com/hubs/portfolio", {
         accessTokenFactory: () => localStorage.getItem("token"),
       })
       .withAutomaticReconnect()

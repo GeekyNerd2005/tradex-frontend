@@ -15,7 +15,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:5001/api/auth/login", {
+      const res = await axios.post("http://tradex-backend.onrender.com/api/auth/login", {
         username,
         password,
       });
