@@ -1,0 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+.navbar-container {
+  font-family: 'Orbitron', sans-serif;
+  background: rgba(18, 0, 31, 0.85); /* Deep purple/black translucent */
+  border: 1px solid rgba(255, 51, 102, 0.4); /* Pinkish red border */
+  box-shadow:
+    0 0 15px rgba(255, 51, 102, 0.7),
+    inset 0 0 8px rgba(255, 20, 60, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 1rem;
+  position: fixed;
+  top: 0;left: 0;
+  right: 0;
+  height: 60px;            /* or whatever is actual navbar height */
+  z-index: 1000;
+}
+
+.navbar-left {
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-btn {
+  background: transparent;
+  border: none;
+  color: #ff2f6d;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: all 0.25s ease;
+  text-shadow: none;
+}
+
+.nav-btn span {
+  color: #ff2a54;
+  text-shadow: none;
+}
+
+.nav-btn:hover span {
+  text-shadow:
+    0 0 1px rgba(255, 42, 84, 0.6),
+    0 0 3px rgba(255, 42, 84, 0.2);
+}
+
+.nav-btn:hover {
+  background: #32031999;
+  box-shadow:
+    0 0 5px #86083a,
+    0 0 10px #2e0213;
+  color: #fff;
+}
+
+.navbar-search {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 250px;
+}
+
+.search-input {
+  flex-grow: 1;
+  background: #1e001f;
+  border: 1.5px solid #ff2f6d;
+  border-radius: 8px;
+  color: #ff99bb;
+  font-size: 14px;
+  padding: 6px 12px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  text-shadow:
+    0 0 3px #ff5588;
+}
+
+.search-input::placeholder {
+  color: #ff5588;
+  opacity: 0.7;
+  font-style: italic;
+  text-shadow:
+    0 0 5px #ff4466;
+}
+
+.search-input:focus {
+  border-color: #ff0033;
+  box-shadow:
+    0 0 8px #ff0033,
+    0 0 15px #cc0055;
+  color: #fff;
+}
+
+.search-btn {
+  background: #ff0033;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  color: black;
+  cursor: pointer;
+  box-shadow:
+    0 0 8px #ff0033,
+    0 0 18px #cc0055;
+  transition: background 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.search-btn:hover {
+  background: #cc0055;
+  box-shadow:
+    0 0 12px #ff0055,
+    0 0 25px #ff3366;
+}
+
+.search-error {
+  position: absolute;
+  right: 1rem;
+  top: 100%;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #ff4444;
+  font-weight: 700;
+  text-shadow:
+    0 0 6px #ff0000;
+}
+
+.neon-text {
+  color: #ff2a54;
+  text-shadow:
+    0 0 4px rgba(255, 42, 84, 0.6),
+    0 0 8px rgba(255, 42, 84, 0.3);
+}
+
+/* Optional: animation on navbar */
+.animate-navbar {
+  animation: fadeInDown 0.8s ease forwards;
+}
+
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
