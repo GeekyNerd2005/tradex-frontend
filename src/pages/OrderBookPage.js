@@ -130,7 +130,7 @@ export default function OrderBookPage() {
 
       const interval = intervals[range] || "1d";
       const res = await axios.get(
-        `http://tradex-backend.onrender.com/api/Market/price-history/${symbol}?interval=${interval}`,
+        `https://tradex-backend.onrender.com/api/Market/price-history/${symbol}?interval=${interval}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -182,7 +182,7 @@ export default function OrderBookPage() {
     if (!token) return;
 
     const connection = new HubConnectionBuilder()
-      .withUrl("http://tradex-backend.onrender.com/hubs/orderbook", {
+      .withUrl("https://tradex-backend.onrender.com/hubs/orderbook", {
         accessTokenFactory: () => token,
       })
       .configureLogging(LogLevel.Information)
@@ -222,7 +222,7 @@ export default function OrderBookPage() {
 
       try {
         const response = await axios.get(
-          `http://tradex-backend.onrender.com/api/Market/price?ticker=${symbol}`,
+          `https://tradex-backend.onrender.com/api/Market/price?ticker=${symbol}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setPrice(response.data.price);
@@ -248,7 +248,7 @@ export default function OrderBookPage() {
 
     try {
       await axios.post(
-        "http://tradex-backend.onrender.com/api/Orders/place",
+        "https://tradex-backend.onrender.com/api/Orders/place",
         {
           symbol: symbol.toUpperCase(),
           side: enumOrderSide[side],

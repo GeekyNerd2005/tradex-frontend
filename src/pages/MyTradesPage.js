@@ -14,7 +14,7 @@ export default function MyTradesPage() {
     const fetchTrades = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://tradex-backend.onrender.com/api/trades/mine", {
+        const res = await axios.get("https://tradex-backend.onrender.com/api/trades/mine", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setTrades(res.data);
