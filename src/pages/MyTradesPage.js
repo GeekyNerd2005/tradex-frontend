@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Navbar from "../components/Navbar";
 
 export default function MyTradesPage() {
   const [trades, setTrades] = useState([]);
@@ -14,7 +13,7 @@ export default function MyTradesPage() {
     const fetchTrades = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("https://tradex-backend.onrender.com/api/trades/mine", {
+        const res = await axios.get("http://localhost:5001/api/trades/mine", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setTrades(res.data);
@@ -69,7 +68,7 @@ export default function MyTradesPage() {
       t.price,
       t.quantity,
       new Date(t.executedAt).toLocaleString(),
-      t.side === 1 ? `$${(t.price - avgBuyPrice(t.symbol)).toFixed(2) * t.quantity}` : "-"
+      t.side === 1 ? `$${((t.price - avgBuyPrice(t.symbol)) * t.quantity).toFixed(2)}` : "-"
     ]);
 
     const csv = [headers, ...rows]
@@ -87,53 +86,206 @@ export default function MyTradesPage() {
 
   return (
     <>
-      <Navbar />
-      <div className="min-h-screen bg-[#0a0a0a] text-[#ff99cc] font-orbitron px-4 py-10 flex flex-col items-center">
-        <div className="w-full max-w-6xl bg-[#120014dd] backdrop-blur-md rounded-xl border border-[#ff2f6d44] p-6 shadow-[0_0_30px_#ff2f6d33]">
-          <h2 className="text-4xl font-bold mb-6 text-center text-[#ff3366] drop-shadow-[0_0_10px_#ff3366]">
-  Executed Trades
-</h2>
+      <style>{`
+        /* Container */
+        .mytrades-container {
+          padding: 2rem;
+          background: #121b26; /* dark navy */
+          min-height: 100vh;
+          font-family: 'Rajdhani', sans-serif;
+          color: #cfd8dc;
+          display: flex;
+          justify-content: center;
+          align-items: flex-start;
+        }
 
+        /* Card */
+        .card {
+          background: #1f2a38;
+          border-radius: 12px;
+          padding: 2rem;
+          width: 95%;
+          max-width: 1100px;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.7);
+          border: 1px solid #2e3a4e;
+        }
 
-          {/* Filters */}
-          <div className="flex flex-wrap justify-between items-center mb-6 gap-3">
+        /* Header */
+        .section-header {
+          color: #63c7ff;
+          font-weight: 700;
+          font-size: 2rem;
+          margin-bottom: 1.6rem;
+          user-select: none;
+          text-shadow: 0 0 2px #4fa3d9;
+        }
+
+        /* Filter and export bar */
+        .filter-export-bar {
+          display: flex;
+          gap: 1rem;
+          margin-bottom: 1.6rem;
+          flex-wrap: wrap;
+        }
+
+        /* Filter input */
+        .filter-input {
+          background: #16202b;
+          border: 1.5px solid #2e3a4e;
+          border-radius: 6px;
+          padding: 0.5rem 1rem;
+          color: #a0b9d4;
+          font-size: 1rem;
+          outline: none;
+          transition: border-color 0.3s ease;
+          flex-grow: 1;
+          min-width: 200px;
+        }
+        .filter-input::placeholder {
+          color: #597a9a;
+          opacity: 0.8;
+        }
+        .filter-input:focus {
+          border-color: #63c7ff;
+          color: #cce7ff;
+          box-shadow: 0 0 6px #63c7ff44;
+        }
+
+        /* Button */
+        .btn {
+          background-color: #2e3a4e;
+          border: none;
+          border-radius: 6px;
+          color: #63c7ff;
+          font-weight: 700;
+          padding: 0.5rem 1.5rem;
+          cursor: pointer;
+          user-select: none;
+          transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+          background-color: #4a74ba;
+          color: #d0e9ff;
+        }
+
+        /* Table wrapper */
+        .table-wrapper {
+          overflow-x: auto;
+        }
+
+        /* Table */
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 1rem;
+          color: #cfd8dc;
+          user-select: none;
+        }
+        th, td {
+          padding: 0.7rem 1rem;
+          border-bottom: 1px solid #2e3a4e;
+          text-align: center;
+        }
+
+        /* Table header */
+        th {
+          background: #263645;
+          color: #63c7ff;
+          font-weight: 700;
+          cursor: pointer;
+          position: sticky;
+          top: 0;
+          z-index: 1;
+          user-select: none;
+        }
+        th.active-sort {
+          background: #3a5ba0;
+          color: #d0e9ff;
+          box-shadow: inset 0 0 10px #4a74ba;
+        }
+
+        /* Table row hover */
+        tbody tr:hover {
+          background-color: #2c3a56;
+          transition: background-color 0.2s ease;
+        }
+
+        /* Buy/Sell text */
+        .buy-side {
+          color: #4caf50;
+          font-weight: 700;
+        }
+        .sell-side {
+          color: #e5534b;
+          font-weight: 700;
+        }
+
+        /* PnL */
+        .pnl-positive {
+          color: #4caf50;
+          font-weight: 700;
+        }
+        .pnl-negative {
+          color: #e5534b;
+          font-weight: 700;
+        }
+        .pnl-neutral {
+          color: #7a8ca6;
+        }
+
+        /* Loading and error */
+        .loading-text, .error-text, .no-data-text {
+          font-size: 1.1rem;
+          font-weight: 600;
+          user-select: none;
+          margin-top: 1rem;
+          text-align: center;
+          color: #88a2c1;
+        }
+        .error-text {
+          color: #e5534b;
+        }
+      `}</style>
+
+      <div className="mytrades-container">
+        <div className="card">
+          <h2 className="section-header">Executed Trades</h2>
+
+          <div className="filter-export-bar">
             <input
               type="text"
-              placeholder="🔍 Filter by symbol"
+              placeholder="Filter by symbol..."
               value={symbolFilter}
               onChange={(e) => setSymbolFilter(e.target.value)}
-              className="bg-[#1a001f] text-[#ff99cc] border border-[#ff2f6d33] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#ff66aa] w-full md:w-auto"
+              className="filter-input"
             />
-            <button
-              onClick={downloadCSV}
-              className="px-4 py-2 bg-gradient-to-r from-[#ff0066] to-[#ff3399] hover:from-[#ff3399] hover:to-[#ff0066] text-black font-bold rounded shadow-md hover:shadow-pink-500/50 transition-all transform hover:scale-105"
-            >
-              📤 Export CSV
+            <button onClick={downloadCSV} className="btn">
+              Export CSV
             </button>
           </div>
 
-          {/* Table */}
           {loading ? (
-            <p className="text-center text-[#ff99cc] animate-pulse">Loading trades...</p>
+            <p className="loading-text">Loading trades...</p>
           ) : error ? (
-            <p className="text-center text-red-500">{error}</p>
+            <p className="error-text">{error}</p>
           ) : filtered.length === 0 ? (
-            <p className="text-center text-[#ff7799]">No trades match filter.</p>
+            <p className="no-data-text">No trades match filter.</p>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm text-left border-collapse font-orbitron">
-                <thead className="text-[#ff99cc] bg-[#1a001f66]">
+            <div className="table-wrapper">
+              <table>
+                <thead>
                   <tr>
                     {["id", "symbol", "side", "price", "quantity", "executedAt"].map((key) => (
                       <th
                         key={key}
                         onClick={() => requestSort(key)}
-                        className="px-4 py-3 border-b border-[#ff2f6d33] cursor-pointer hover:text-[#ff66aa]"
+                        className={sortConfig.key === key ? "active-sort" : ""}
                       >
-                        {key.charAt(0).toUpperCase() + key.slice(1)} {sortConfig.key === key ? (sortConfig.direction === "asc" ? "↑" : "↓") : ""}
+                        {key.charAt(0).toUpperCase() + key.slice(1)}
+                        {sortConfig.key === key ? (sortConfig.direction === "asc" ? " ↑" : " ↓") : ""}
                       </th>
                     ))}
-                    <th className="px-4 py-3 border-b border-[#ff2f6d33]">P&L</th>
+                    <th>P&L</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -141,24 +293,16 @@ export default function MyTradesPage() {
                     const isSell = t.side === 1;
                     const pnl = isSell ? (t.price - avgBuyPrice(t.symbol)) * t.quantity : null;
                     return (
-                      <tr
-                        key={t.id}
-                        className="hover:bg-[#29002188] hover:shadow-[0_0_12px_#ff2f6d77] transition-all duration-200"
-                      >
-                        <td className="px-4 py-3">{t.id}</td>
-                        <td className="px-4 py-3">{t.symbol}</td>
-                        <td className={`px-4 py-3 font-bold ${t.side === 0 ? "text-green-400" : "text-red-400"}`}>
+                      <tr key={t.id}>
+                        <td>{t.id}</td>
+                        <td>{t.symbol}</td>
+                        <td className={t.side === 0 ? "buy-side" : "sell-side"}>
                           {t.side === 0 ? "Buy" : "Sell"}
                         </td>
-                        <td className="px-4 py-3">${t.price.toFixed(2)}</td>
-                        <td className="px-4 py-3">{t.quantity}</td>
-                        <td className="px-4 py-3">
-                          {new Date(t.executedAt).toLocaleString(undefined, {
-                            dateStyle: "medium",
-                            timeStyle: "short",
-                          })}
-                        </td>
-                        <td className={`px-4 py-3 font-semibold ${isSell && pnl !== null ? (pnl >= 0 ? "text-green-300" : "text-red-400") : ""}`}>
+                        <td>${t.price.toFixed(2)}</td>
+                        <td>{t.quantity}</td>
+                        <td>{new Date(t.executedAt).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })}</td>
+                        <td className={isSell && pnl !== null ? (pnl >= 0 ? "pnl-positive" : "pnl-negative") : "pnl-neutral"}>
                           {isSell && pnl !== null ? `$${pnl.toFixed(2)}` : "-"}
                         </td>
                       </tr>

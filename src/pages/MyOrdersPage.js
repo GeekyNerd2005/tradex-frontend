@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Navbar from "../components/Navbar";
 
 function getStatusText(status) {
   switch (status) {
@@ -36,7 +35,7 @@ export default function MyOrdersPage() {
     setError("");
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("https://tradex-backend.onrender.com/api/Orders/history", {
+      const response = await axios.get("http://localhost:5001/api/Orders/history", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setOrders(response.data);
@@ -55,7 +54,7 @@ export default function MyOrdersPage() {
     setCancelStatus("");
     try {
       const token = localStorage.getItem("token");
-      await axios.post(`https://tradex-backend.onrender.com/api/Orders/cancel/${orderId}`, {}, {
+      await axios.post(`http://localhost:5001/api/Orders/cancel/${orderId}`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCancelStatus(`✅ Order #${orderId} cancelled successfully.`);
@@ -68,93 +67,84 @@ export default function MyOrdersPage() {
 
   if (loading) {
     return (
-      <>
-        <Navbar />
-        <div className="text-center mt-20 text-[#66ffe6] font-orbitron text-xl animate-pulse">
-          Fetching your order history...
-        </div>
-      </>
+      <div className="min-h-screen bg-[#0a122a] flex items-center justify-center font-rajdhani text-cyan-400 text-xl">
+        Fetching your order history...
+      </div>
     );
   }
 
   if (error) {
     return (
-      <>
-        <Navbar />
-        <div className="text-center mt-20 text-red-400 font-orbitron text-lg">
-          {error}
-        </div>
-      </>
+      <div className="min-h-screen bg-[#0a122a] flex items-center justify-center font-rajdhani text-red-500 text-lg">
+        {error}
+      </div>
     );
   }
 
   return (
-    <>
-      <Navbar />
-      <div className="min-h-screen bg-[#050505] text-[#ff99cc] font-orbitron px-6 py-10 flex flex-col items-center">
-        <div className="w-full max-w-6xl bg-[#1a001fdd] backdrop-blur-md rounded-xl border border-[#ff2f6d44] p-8 shadow-[0_0_25px_#ff2f6d55]">
-          <h2 className="text-4xl text-center text-[#ff33aa] font-extrabold mb-8 tracking-wide drop-shadow-[0_0_12px_#ff66cc] animate-fade-in">
-            My Orders
-          </h2>
+    <main className="min-h-screen bg-[#0a122a] px-8 py-12 font-rajdhani text-cyan-400 flex flex-col items-center">
+      <section className="w-full max-w-7xl bg-[#071025cc] border border-[#00aaff88] rounded-lg p-8 backdrop-blur-sm">
+        <h2 className="text-4xl font-semibold text-[#00aaff] mb-8 tracking-wide">
+          My Orders
+        </h2>
 
-          {cancelStatus && (
-            <p className="text-center mb-6 text-base text-[#99ffee] drop-shadow-[0_0_6px_#99ffee] animate-fade-in">
-              {cancelStatus}
-            </p>
-          )}
+        {cancelStatus && (
+          <p className="mb-6 text-center text-[#55ccff]">
+            {cancelStatus}
+          </p>
+        )}
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left border-collapse">
-              <thead className="text-[#ff99cc] bg-[#29002166]">
+        <div className="overflow-x-auto rounded-md">
+          <table className="w-full text-left border-collapse">
+            <thead className="bg-[#001733cc] text-[#00aaffcc] uppercase tracking-wide text-sm font-semibold">
+              <tr>
+                {["Symbol", "Side", "Type", "Quantity", "Price", "Status", "Action"].map((h, i) => (
+                  <th key={i} className="px-6 py-3 border-b border-[#00aaff55]">
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {orders.length === 0 ? (
                 <tr>
-                  {["Symbol", "Side", "Type", "Quantity", "Price", "Status", "Action"].map((h, i) => (
-                    <th key={i} className="px-5 py-4 border-b border-[#ff2f6d33] font-semibold text-base tracking-wide">
-                      {h}
-                    </th>
-                  ))}
+                  <td colSpan="7" className="text-center py-8 text-[#006688] text-lg font-semibold">
+                    No orders found.
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {orders.length === 0 ? (
-                  <tr>
-                    <td colSpan="7" className="text-center py-6 text-[#ff7799] text-lg">
-                      You have no orders yet.
+              ) : (
+                orders.map((order) => (
+                  <tr
+                    key={order.id}
+                    className="hover:bg-[#00224455] transition duration-150 ease-in-out cursor-default"
+                  >
+                    <td className="px-6 py-4 border-b border-[#00446655]">{order.symbol}</td>
+                    <td className="px-6 py-4 border-b border-[#00446655]">{getSideText(order.side)}</td>
+                    <td className="px-6 py-4 border-b border-[#00446655]">{getOrderTypeText(order.type)}</td>
+                    <td className="px-6 py-4 border-b border-[#00446655]">{order.quantity}</td>
+                    <td className="px-6 py-4 border-b border-[#00446655]">
+                      {order.price !== null ? `$${order.price.toFixed(2)}` : "-"}
+                    </td>
+                    <td className="px-6 py-4 border-b border-[#00446655]">{getStatusText(order.status)}</td>
+                    <td className="px-6 py-4 border-b border-[#00446655]">
+                      {order.status === 0 ? (
+                        <button
+                          onClick={() => cancelOrder(order.id)}
+                          className="px-5 py-2 rounded-md bg-gradient-to-r from-[#0099ff] to-[#0066cc] hover:from-[#33bbff] hover:to-[#3399cc] text-[#001f3f] font-semibold text-sm shadow-sm transition transform hover:scale-105"
+                        >
+                          Cancel
+                        </button>
+                      ) : (
+                        <span className="text-[#3399cc] font-semibold">-</span>
+                      )}
                     </td>
                   </tr>
-                ) : (
-                  orders.map((order) => (
-                    <tr
-                      key={order.id}
-                      className="hover:bg-[#3a002a33] transition-all duration-200 ease-in-out"
-                    >
-                      <td className="px-5 py-4">{order.symbol}</td>
-                      <td className="px-5 py-4">{getSideText(order.side)}</td>
-                      <td className="px-5 py-4">{getOrderTypeText(order.type)}</td>
-                      <td className="px-5 py-4">{order.quantity}</td>
-                      <td className="px-5 py-4">
-                        {order.price !== null ? `$${order.price.toFixed(2)}` : "-"}
-                      </td>
-                      <td className="px-5 py-4">{getStatusText(order.status)}</td>
-                      <td className="px-5 py-4">
-                        {order.status === 0 ? (
-                          <button
-                            onClick={() => cancelOrder(order.id)}
-                            className="px-4 py-1.5 rounded-md bg-gradient-to-r from-[#ff0055] to-[#ff3399] hover:from-[#ff3399] hover:to-[#ff0055] text-black font-bold text-xs shadow-lg hover:shadow-pink-500/40 transition transform hover:scale-105"
-                          >
-                            Cancel
-                          </button>
-                        ) : (
-                          <span className="text-[#999]">-</span>
-                        )}
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
-      </div>
-    </>
+      </section>
+    </main>
   );
 }

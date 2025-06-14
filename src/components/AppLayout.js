@@ -1,12 +1,11 @@
-// src/components/AppLayout.js
 import React from "react";
 import Navbar from "./Navbar";
 
 export default function AppLayout({ children }) {
   return (
-    <>
+    <div className="flex flex-col min-h-screen bg-[#0B0F2F] text-white">
       <Navbar />
-      <div className="pt-16">{children}</div> {/* Adjust if navbar is sticky */}
-    </>
+      <main className="flex-1">{children}</main>
+    </div>
   );
 }

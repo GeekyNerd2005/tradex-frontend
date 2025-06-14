@@ -11,6 +11,18 @@ export default function OrderBookPage() {
   const [bids, setBids] = useState([]);
   const [asks, setAsks] = useState([]);
   const [price, setPrice] = useState(null);
+  const [currency, setCurrency] = useState("");
+  const currencyMap = {
+    USD: "$",
+    INR: "₹",
+    EUR: "€",
+    GBP: "£",
+    JPY: "¥"
+  };
+  const symbolWithCurrency = (amount) =>
+  `<h2 className="live-price">{symbolWithCurrency(price)}</h2>
+${currencyMap[currency] || currency || ""} ${amount?.toFixed(2)}`;
+
   const [hoverPrice, setHoverPrice] = useState(null);
   const [error, setError] = useState("");
   const [orderStatus, setOrderStatus] = useState("");
@@ -130,7 +142,7 @@ export default function OrderBookPage() {
 
       const interval = intervals[range] || "1d";
       const res = await axios.get(
-        `https://tradex-backend.onrender.com/api/Market/price-history/${symbol}?interval=${interval}`,
+        `http://localhost:5001/api/Market/price-history/${symbol}?interval=${interval}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -182,7 +194,7 @@ export default function OrderBookPage() {
     if (!token) return;
 
     const connection = new HubConnectionBuilder()
-      .withUrl("https://tradex-backend.onrender.com/hubs/orderbook", {
+      .withUrl("http://localhost:5001/hubs/orderbook", {
         accessTokenFactory: () => token,
       })
       .configureLogging(LogLevel.Information)
@@ -215,24 +227,24 @@ export default function OrderBookPage() {
     };
   }, [symbol]);
 
-  useEffect(() => {
-    const fetchPrice = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) return;
+useEffect(() => {
+  async function fetchPrice() {
+    try {
+      const res = await axios.get(`http://localhost:5001/api/market/price?ticker=${symbol}`, {
+        headers: {
+          Authorization: localStorage.getItem("token") || "",
+        },
+      });
 
-      try {
-        const response = await axios.get(
-          `https://tradex-backend.onrender.com/api/Market/price?ticker=${symbol}`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        setPrice(response.data.price);
-        setError("");
-      } catch (err) {
-        setError("Error fetching price.");
-      }
-    };
-    if (symbol) fetchPrice();
-  }, [symbol]);
+      setPrice(res.data.price);
+      setCurrency(res.data.currency); // << NEW
+    } catch (err) {
+      console.error("Error fetching price", err);
+    }
+  }
+
+  fetchPrice();
+}, [symbol]);
 
   const submitOrder = async () => {
     const token = localStorage.getItem("token");
@@ -248,7 +260,7 @@ export default function OrderBookPage() {
 
     try {
       await axios.post(
-        "https://tradex-backend.onrender.com/api/Orders/place",
+        "http://localhost:5001/api/Orders/place",
         {
           symbol: symbol.toUpperCase(),
           side: enumOrderSide[side],
@@ -274,7 +286,10 @@ export default function OrderBookPage() {
   return (
     <div className="p-6 text-white bg-[#0b0f1a] min-h-screen font-orbitron">
       <h2 className="text-3xl font-bold mb-2 text-cyan-300">
-        Live Trading: {symbol}
+        Live Trading 
+      </h2>
+      <h2 className="text-3xl font-bold mb-2 text-blue-200">
+       {symbol}
       </h2>
 
       <div className="mb-4 text-lg">

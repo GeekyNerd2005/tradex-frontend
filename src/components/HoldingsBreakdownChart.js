@@ -10,23 +10,33 @@ export default function HoldingsPieChart({ holdings }) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    console.log("holdings prop:", holdings);
     if (!holdings || holdings.length === 0) {
       setError("No valid holdings to display.");
       return;
     }
 
-    const filtered = holdings.filter(
-      (h) => h.quantity > 0 && h.currentPrice > 0 && !isNaN(h.quantity * h.currentPrice)
-    );
+    const filtered = holdings
+  .map(h => ({
+    ...h,
+    quantity: Number(h.quantity),
+    currentPrice: Number(h.currentPrice),
+  }))
+  .filter(
+    (h) => h.quantity > 0 && h.currentPrice > 0 && !isNaN(h.quantity * h.currentPrice)
+  );
+
 
     if (filtered.length === 0) {
       setError("No valid holdings data to display chart.");
       return;
     }
+console.log("Filtered holdings:", filtered);
 
     const labels = filtered.map((h) => h.symbol);
     const values = filtered.map((h) => h.quantity * h.currentPrice);
-
+console.log("Chart labels:", labels);
+console.log("Chart values:", values);
     setData({
       labels,
       datasets: [
@@ -78,7 +88,10 @@ export default function HoldingsPieChart({ holdings }) {
       <h3 style={{ color: "var(--text-color)", marginBottom: "1rem", textAlign: "center" }}>
         Holdings Breakdown
       </h3>
-      <Pie data={data} />
+      <div style={{ width: "100%", height: "300px" }}>
+  <Pie data={data} options={{ responsive: true, maintainAspectRatio: false }} />
+</div>
+
     </div>
   );
 }

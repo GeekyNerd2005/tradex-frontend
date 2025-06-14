@@ -10,9 +10,10 @@ import OrderBookPage from "./pages/OrderBookPage";
 import TradingChartPage from "./pages/TradingChartPage";
 import PrivateRoute from "./components/PrivateRoute";
 import AppLayout from "./components/AppLayout";
-
+import { ThemeProvider } from "./context/ThemeContext";
 function App() {
   return (
+    <ThemeProvider>
     <Router>
       <Routes>
         {/* Public routes */}
@@ -82,6 +83,7 @@ function App() {
         />
       </Routes>
     </Router>
+    </ThemeProvider>
   );
 }
 

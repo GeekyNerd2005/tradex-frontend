@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ThemeContext } from "../context/ThemeContext";
+import { useContext } from "react";
 
 export default function HomePage() {
   const [ticker, setTicker] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { theme } = useContext(ThemeContext);
+  const darkMode = theme === "dark";
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -17,87 +21,79 @@ export default function HomePage() {
     navigate(`/orderbook/${trimmedTicker}`);
   };
 
-  // 🔒 Disable scroll just for this page
-  useEffect(() => {
-    const original = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = original;
-    };
-  }, []);
-
   return (
-    <>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap"
-        rel="stylesheet"
-      />
+    <div
+      className={`h-screen w-screen font-[Rajdhani] flex flex-col items-center justify-center relative px-4 transition-all ${
+        darkMode ? "text-[#E0E6F1] bg-[#0B0F2F]" : "text-[#0c1c2f] bg-[#e7f3ff]"
+      }`}
+    >
+      {/* Background Gradient and Blurs */}
+      {darkMode && (
+        <>
+          <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#0B0F2F] via-[#1E2A78] to-[#0B0F2F]" />
+          <div
+            className="absolute top-1/3 left-1/2 w-[500px] h-[500px] rounded-full blur-[160px]"
+            style={{
+              background:
+                "radial-gradient(circle at center, rgba(0,255,255,0.06), transparent 70%)",
+              transform: "translate(-50%, -50%)",
+            }}
+          />
+          <div
+            className="absolute bottom-16 right-16 w-[320px] h-[320px] rounded-full blur-[120px]"
+            style={{
+              background:
+                "radial-gradient(circle at center, rgba(0,140,255,0.05), transparent 80%)",
+            }}
+          />
+        </>
+      )}
+
+      {/* Form Container */}
       <div
-        className="h-screen w-screen overflow-hidden font-[Orbitron] bg-[#0a0a0a] text-[#ff2f6d] flex flex-col items-center justify-center relative px-4"
-        style={{ fontFamily: "'Orbitron', sans-serif" }}
+        className={`z-10 backdrop-blur-xl rounded-2xl shadow-[0_0_30px_#2AF5FF11] p-10 max-w-md w-full border transition-all ${
+          darkMode
+            ? "bg-[#11193F]/80 border-[#2AF5FF33]"
+            : "bg-white border-[#b3dfff]"
+        }`}
       >
-        {/* Background Aurora */}
-        <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#09030f] via-[#120014] to-[#09030f]" />
-        <div
-          className="absolute top-1/3 left-1/2 w-[450px] h-[450px] rounded-full blur-[130px]"
-          style={{
-            background:
-              "radial-gradient(circle at center, rgba(255,20,60,0.06), transparent 80%)",
-            transform: "translate(-50%, -50%)",
-            pointerEvents: "none",
-            zIndex: 0,
-          }}
-        />
-        <div
-          className="absolute bottom-10 right-10 w-[300px] h-[300px] rounded-full blur-[110px]"
-          style={{
-            background:
-              "radial-gradient(circle at center, rgba(180,0,70,0.04), transparent 80%)",
-            pointerEvents: "none",
-            zIndex: 0,
-          }}
-        />
-
-        {/* Branding */}
-        <div className="absolute top-6 left-6 z-10">
-          <h1 className="text-4xl font-bold text-[#ff3366] tracking-widest uppercase drop-shadow-sm">
-            Tradex<span className="text-[#ff99cc]">.</span>
-          </h1>
-          <p className="text-sm text-[#ffc2d9] italic mt-1 opacity-70">
-            Trade smarter. Trade <span className="text-[#ff5588]">Tradex</span>.
+        <h2
+          className={`text-3xl font-semibold mb-6 tracking-wide text-center drop-shadow ${
+            darkMode ? "text-[#00FFFF]" : "text-[#007acc]"
+          }`}
+        >
+          Enter Ticker
+        </h2>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <input
+            type="text"
+            placeholder="e.g. INFY.NS"
+            value={ticker}
+            onChange={(e) => setTicker(e.target.value)}
+            className={`px-4 py-3 rounded-lg border placeholder:font-light shadow-inner transition-all focus:outline-none focus:ring-2 ${
+              darkMode
+                ? "bg-[#192b45] text-[#cfe8ff] border-[#3399ff33] placeholder:text-[#88bfff] focus:ring-[#2AF5FF]"
+                : "bg-[#f4faff] text-[#0c1c2f] border-[#cceeff] placeholder:text-[#7aaacc] focus:ring-[#007acc]"
+            }`}
+            autoComplete="off"
+          />
+          <button
+            type="submit"
+            className={`py-3 rounded-lg font-bold tracking-wide transition-all hover:scale-[1.02] hover:shadow-[0_0_10px_#2AF5FF88] ${
+              darkMode
+                ? "bg-gradient-to-r from-[#00FFFF] to-[#2AF5FF] text-[#0B0F2F]"
+                : "bg-gradient-to-r from-[#007acc] to-[#00bfff] text-white"
+            }`}
+          >
+            Go
+          </button>
+        </form>
+        {error && (
+          <p className="mt-4 text-sm text-[#ff6666] font-medium text-center">
+            {error}
           </p>
-        </div>
-
-        {/* Search Ticker Box */}
-        <div className="z-10 bg-[#120014cc] border border-[#ff2f6d88] rounded-xl shadow-lg p-8 max-w-md w-full">
-          <h2 className="text-3xl font-semibold mb-6 text-[#ff3366] tracking-wide text-center drop-shadow-md">
-            Search Ticker
-          </h2>
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <input
-              type="text"
-              placeholder="Enter ticker (e.g. INFY.NS)"
-              value={ticker}
-              onChange={(e) => setTicker(e.target.value)}
-              className="px-4 py-3 rounded-lg bg-[#1e001f] text-[#ff99bb] border border-[#ff2f6d66] focus:outline-none focus:ring-2 focus:ring-[#ff3366] placeholder:text-[#ff5588] transition"
-              style={{ fontSize: "16px" }}
-              autoComplete="off"
-            />
-            <button
-              type="submit"
-              className="py-3 rounded-lg bg-gradient-to-r from-[#ff0033] to-[#cc0055] hover:from-[#cc0055] hover:to-[#ff0033] text-black font-bold tracking-wide shadow-md transition"
-              style={{ fontSize: "16px" }}
-            >
-              Go
-            </button>
-          </form>
-          {error && (
-            <p className="mt-4 text-sm text-[#ff4444] font-semibold text-center drop-shadow-md">
-              {error}
-            </p>
-          )}
-        </div>
+        )}
       </div>
-    </>
+    </div>
   );
 }

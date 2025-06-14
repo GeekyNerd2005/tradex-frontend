@@ -1,87 +1,43 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  LogOut,
-  Search,
-  Home,
-  PieChart,
-  FileText,
-  Activity,
-} from "lucide-react";
-import "../styles/navbar.css";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
+  const [search, setSearch] = useState("");
   const navigate = useNavigate();
-  const [symbol, setSymbol] = useState("");
-  const [error, setError] = useState("");
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
-
-  const handleSearch = (e) => {
+  const handleSearchSubmit = (e) => {
     e.preventDefault();
-    const trimmed = symbol.trim().toUpperCase();
-    if (!trimmed) {
-      setError("Please enter a valid ticker");
-      return;
+    const trimmed = search.trim();
+    if (trimmed) {
+      // Navigate to order book page with ticker param
+      navigate(`/orderbook/${trimmed.toUpperCase()}`);
+      setSearch("");
     }
-    setError("");
-    navigate(`/orderbook/${trimmed}`);
   };
 
   return (
-    <nav className="navbar-container neon-glass sticky-top animate-navbar">
-      <div className="navbar-left">
-        <button onClick={() => navigate("/")} title="Home" className="nav-btn">
-          <Home size={18} /> <span>Home</span>
-        </button>
-        <button
-          onClick={() => navigate("/portfolio")}
-          title="Portfolio"
-          className="nav-btn"
-        >
-          <PieChart size={18} /> <span>Portfolio</span>
-        </button>
-        <button
-          onClick={() => navigate("/orders")}
-          title="Orders"
-          className="nav-btn"
-        >
-          <FileText size={18} /> <span>Orders</span>
-        </button>
-        <button
-          onClick={() => navigate("/trades")}
-          title="My Trades"
-          className="nav-btn"
-        >
-          <Activity size={18} /> <span>Trades</span>
-        </button>
-        <button onClick={logout} title="Logout" className="nav-btn logout-btn">
-          <LogOut size={18} /> <span>Logout</span>
-        </button>
-      </div>
+    <div className="bg-background border-b border-primary px-6 py-4 flex justify-between items-center shadow-md font-sans">
+  {/* Left Side - Logo */}
+  <h1 className="text-3xl font-bold text-accent tracking-widest">TRADEX.</h1>
 
-      <form onSubmit={handleSearch} className="navbar-search">
-        <input
-          type="text"
-          placeholder="Search (e.g. INFY.NS)"
-          value={symbol}
-          onChange={(e) => setSymbol(e.target.value)}
-          className="search-input"
-          spellCheck="false"
-        />
-        <button type="submit" title="Search" className="search-btn">
-          <Search size={16} />
-        </button>
-      </form>
+  {/* Right Side - Links + Search */}
+  <div className="flex items-center space-x-6">
+    <a href="/" className="hover:text-accent transition">Home</a>
+    <a href="/portfolio" className="hover:text-accent transition">Portfolio</a>
+    <a href="/orders" className="hover:text-accent transition">Orders</a>
+    <a href="/trades" className="hover:text-accent transition">Trades</a>
+    <form onSubmit={handleSearchSubmit}>
+      <input
+        type="text"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="Search ticker..."
+        className="px-3 py-1 rounded-md border border-gray-600 bg-[#111] text-[#eee] focus:outline-none focus:ring-2 focus:ring-accent"
+      />
+    </form>
+  </div>
+</div>
 
-      {error && (
-        <div className="search-error neon-text">
-          {error}
-        </div>
-      )}
-    </nav>
   );
 }

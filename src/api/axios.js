@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'https://tradex-backend.onrender.com/api',
+  baseURL: 'http://localhost:5001/api',
 });
 
 instance.interceptors.request.use((config) => {
@@ -11,4 +11,3 @@ instance.interceptors.request.use((config) => {
 });
 
 export default instance;
-

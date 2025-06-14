@@ -64,7 +64,7 @@ body.light-mode {
 .range-buttons button:hover {
   background-color: var(--button-hover);
   transform: translateY(-1px);
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 6px rgba(36, 1, 36, 0.826);
 }
 
 .range-buttons .active {
@@ -100,10 +100,10 @@ body.light-mode {
 }
 
 .controls .indicator-toggle.active {
-  background-color: var(--accent-color);
-  color: #000;
-  font-weight: 700;
-  box-shadow: var(--accent-glow);
+  background-color: var(--button-active);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 0 10px rgba(38, 166, 154, 0.4);
 }
 
 .chart-container {

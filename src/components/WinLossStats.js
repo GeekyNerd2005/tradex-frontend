@@ -12,7 +12,7 @@ const WinLossStats = () => {
       const userId = localStorage.getItem("userId"); // Make sure this is stored at login
 
       const res = await fetch(
-        `https://tradex-backend.onrender.com/api/portfolio/winloss/${userId}`,
+        `http://localhost:5001/api/portfolio/winloss/${userId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

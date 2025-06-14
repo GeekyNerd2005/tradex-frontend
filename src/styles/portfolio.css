@@ -1,59 +1,81 @@
-@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;700&display=swap');
 
-body {
-  background: #0a0a0a;
-  color: #e0e0e0;
-  font-family: 'Orbitron', sans-serif;
+body, html {
+  font-family: 'Rajdhani', sans-serif;
+  background-color: #f5f7fa;  /* very light gray-blue */
+  color: #2c3e50; /* dark blue-gray text */
+  margin: 0;
+  padding: 0;
 }
 
 .portfolio-container {
-  padding: 30px;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1rem 2rem;
+  background-color: #fff; /* white background for cards */
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(44, 62, 80, 0.1);
 }
 
-.glow-header {
-  font-size: 2.5rem;
-  color: #0f0;
-  text-shadow: 0 0 10px #0f0, 0 0 20px #0f0;
-  margin-bottom: 30px;
+.portfolio-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.portfolio-header h2 {
+  font-weight: 700;
+  font-size: 2rem;
+  color: #34495e; /* medium blue-gray */
+}
+
+.funds-chip {
+  background-color: #ecf0f1; /* light gray */
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-weight: 700;
+  color: #2980b9; /* blue accent */
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 1rem;
 }
 
 .range-toggle {
-  margin-bottom: 20px;
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 0.75rem;
 }
 
 .range-button {
-  margin-right: 10px;
-  padding: 8px 16px;
+  background-color: #bdc3c7; /* gray */
   border: none;
+  padding: 0.4rem 1rem;
   border-radius: 6px;
-  background-color: #111;
-  color: #0ff;
-  border: 1px solid #0ff;
+  font-weight: 600;
   cursor: pointer;
-  font-family: 'Orbitron', sans-serif;
-  transition: all 0.2s ease;
+  color: #2c3e50;
+  transition: background-color 0.3s ease;
 }
 
 .range-button:hover {
-  background-color: #0ff;
-  color: #111;
-  box-shadow: 0 0 10px #0ff;
+  background-color: #2980b9; /* blue */
+  color: white;
 }
 
 .range-button.active {
-  background-color: #0ff;
-  color: #111;
-  font-weight: bold;
+  background-color: #2980b9;
+  color: white;
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(0, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 30px;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 0 12px rgba(0, 255, 255, 0.1);
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(44, 62, 80, 0.1);
+  padding: 1rem;
+  margin-bottom: 2rem;
+  overflow-x: auto;
 }
 
 .holdings-table {
@@ -63,37 +85,39 @@ body {
 
 .holdings-table th,
 .holdings-table td {
-  padding: 12px;
-  border-bottom: 1px solid #333;
+  padding: 0.75rem 1rem;
   text-align: left;
+  border-bottom: 1px solid #ecf0f1;
+  font-weight: 500;
+  color: #34495e;
+}
+
+.holdings-table th {
+  font-weight: 700;
 }
 
 .gain {
-  color: #00ff99;
-  font-weight: bold;
-  text-shadow: 0 0 6px #00ff99;
+  color: #27ae60; /* green */
 }
 
 .loss {
-  color: #ff4c4c;
-  font-weight: bold;
-  text-shadow: 0 0 6px #ff4c4c;
+  color: #c0392b; /* red */
 }
 
 .charts-wrapper {
   display: flex;
+  gap: 2rem;
   flex-wrap: wrap;
-  gap: 30px;
 }
 
 .chart-card {
   flex: 1 1 45%;
+  min-width: 300px;
 }
 
 .section-header {
-  color: #0ff;
-  margin-bottom: 15px;
-  text-shadow: 0 0 8px #0ff;
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  color: #34495e;
 }
-
-

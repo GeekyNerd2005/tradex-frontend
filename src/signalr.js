@@ -3,7 +3,7 @@ import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 
 const buildSignalRConnection = (userId) => {
   const connection = new HubConnectionBuilder()
-    .withUrl("https://tradex-backend.onrender.com/portfolioHub", {
+    .withUrl("https://localhost:5001/portfolioHub", {
       accessTokenFactory: () => localStorage.getItem("token") // if JWT protected
     })
     .configureLogging(LogLevel.Information)
