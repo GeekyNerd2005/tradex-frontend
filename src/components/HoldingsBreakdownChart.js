@@ -5,44 +5,24 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default function HoldingsPieChart({ holdings }) {
+export default function HoldingsPieChart() {
   const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    console.log("holdings prop:", holdings);
-    if (!holdings || holdings.length === 0) {
-      setError("No valid holdings to display.");
-      return;
-    }
+    const dummyLabels = ["LT.NS", "MARUTI.NS", "WIPRO.NS", "SBIN.NS", "NTPC.NS"];
+    const dummyValues = dummyLabels.map(() =>
+      Math.floor(Math.random() * 5000 + 1000)
+    );
 
-    const filtered = holdings
-  .map(h => ({
-    ...h,
-    quantity: Number(h.quantity),
-    currentPrice: Number(h.currentPrice),
-  }))
-  .filter(
-    (h) => h.quantity > 0 && h.currentPrice > 0 && !isNaN(h.quantity * h.currentPrice)
-  );
+    console.log("DUMMY Chart labels:", dummyLabels);
+    console.log("DUMMY Chart values:", dummyValues);
 
-
-    if (filtered.length === 0) {
-      setError("No valid holdings data to display chart.");
-      return;
-    }
-console.log("Filtered holdings:", filtered);
-
-    const labels = filtered.map((h) => h.symbol);
-    const values = filtered.map((h) => h.quantity * h.currentPrice);
-console.log("Chart labels:", labels);
-console.log("Chart values:", values);
     setData({
-      labels,
+      labels: dummyLabels,
       datasets: [
         {
-          label: "Holdings Value",
-          data: values,
+          label: "Random Holdings Value",
+          data: dummyValues,
           backgroundColor: [
             "#26a69a",
             "#ef5350",
@@ -57,22 +37,15 @@ console.log("Chart values:", values);
         },
       ],
     });
-  }, [holdings]);
+  }, []);
 
-  if (error) {
+  if (!data) {
     return (
-      <div style={{ color: "var(--text-color)", textAlign: "center", marginTop: "1rem" }}>
-        {error}
+      <div className="spinner" style={{ textAlign: "center", marginTop: "2rem" }}>
+        <p style={{ color: "var(--text-color)" }}>Loading test chart...</p>
       </div>
     );
   }
-
-  if (!data)
-    return (
-      <div className="spinner" style={{ textAlign: "center", marginTop: "2rem" }}>
-        <p style={{ color: "var(--text-color)" }}>Loading chart...</p>
-      </div>
-    );
 
   return (
     <div
@@ -86,12 +59,11 @@ console.log("Chart values:", values);
       }}
     >
       <h3 style={{ color: "var(--text-color)", marginBottom: "1rem", textAlign: "center" }}>
-        Holdings Breakdown
+        Test Holdings Breakdown
       </h3>
       <div style={{ width: "100%", height: "300px" }}>
-  <Pie data={data} options={{ responsive: true, maintainAspectRatio: false }} />
-</div>
-
+        <Pie data={data} options={{ responsive: true, maintainAspectRatio: false }} />
+      </div>
     </div>
   );
 }

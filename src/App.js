@@ -16,11 +16,9 @@ function App() {
     <ThemeProvider>
     <Router>
       <Routes>
-        {/* Public routes */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
 
-        {/* Authenticated layout with Navbar */}
         <Route
           path="/"
           element={

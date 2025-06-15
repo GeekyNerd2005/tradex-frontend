@@ -65,15 +65,17 @@ export default function TradingChartPage() {
           },
         }
       );
+console.log("Raw candle response:", res.data);
+console.log("First candle:", res.data.candles[0]);
 
-      const candles = res.data.map((c) => ({
+      const candles = res.data.candles.map((c) => ({
         time: c.time,
         open: c.open,
         high: c.high,
         low: c.low,
         close: c.close,
       }));
-      const volumes = res.data.map((c) => ({
+      const volumes = res.data.candles.map((c) => ({
         time: c.time,
         value: c.volume,
         color: c.open > c.close ? '#ef5350' : '#26a69a',

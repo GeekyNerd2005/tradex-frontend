@@ -100,11 +100,11 @@ const styles = {
     transition: "background-color 0.2s ease-in-out",
   },
   positivePL: {
-    color: "#32cd32", // neon green
+    color: "#32cd32", 
     fontWeight: "700",
   },
   negativePL: {
-    color: "#ff4c4c", // neon red
+    color: "#ff4c4c", 
     fontWeight: "700",
   },
   chartsWrapper: {
@@ -207,9 +207,6 @@ const Portfolio = () => {
 
   const ranges = ["1w", "1mo", "3mo", "6mo", "1y", "all"];
 
-  // Responsive charts wrapper style
-  // For simplicity, switch flexDirection based on window width once on render
-  // (You can enhance this with a useEffect + window resize listener if you want)
   const isMd = window.innerWidth >= 768;
   const chartsWrapperStyle = {
     ...styles.chartsWrapper,
@@ -223,12 +220,11 @@ const Portfolio = () => {
         <div style={styles.fundsChip}>
           <span style={styles.fundsLabel}>Funds</span>
           <span style={styles.fundsValue}>
-            $ {balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+            ₹{balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}
           </span>
         </div>
       </div>
 
-      {/* Range Toggle */}
       <div style={styles.rangeToggle}>
         {ranges.map((r) => (
           <button
@@ -241,7 +237,6 @@ const Portfolio = () => {
         ))}
       </div>
 
-      {/* Holdings Table */}
       <div style={styles.glassCard}>
         <table style={styles.table}>
           <thead style={styles.theadRow}>
@@ -275,8 +270,8 @@ const Portfolio = () => {
                 >
                   <td style={{ ...styles.td, fontFamily: "monospace" }}>{h.symbol}</td>
                   <td style={{ ...styles.td, textAlign: "right" }}>{h.quantity}</td>
-                  <td style={{ ...styles.td, textAlign: "right" }}>${h.averageBuyPrice.toFixed(2)}</td>
-                  <td style={{ ...styles.td, textAlign: "right" }}>${h.currentPrice.toFixed(2)}</td>
+                  <td style={{ ...styles.td, textAlign: "right" }}>₹{h.averageBuyPrice.toFixed(2)}</td>
+                  <td style={{ ...styles.td, textAlign: "right" }}>₹{h.currentPrice.toFixed(2)}</td>
                   <td
                     style={{
                       ...styles.td,
@@ -285,7 +280,7 @@ const Portfolio = () => {
                       color: h.unrealizedPnL >= 0 ? "#32cd32" : "#ff4c4c",
                     }}
                   >
-                    ${h.unrealizedPnL.toFixed(2)}
+                    ₹{h.unrealizedPnL.toFixed(2)}
                   </td>
                 </tr>
               ))
@@ -294,7 +289,6 @@ const Portfolio = () => {
         </table>
       </div>
 
-      {/* Charts */}
       <div style={chartsWrapperStyle}>
         <div style={styles.chartCard}>
           <h3 style={styles.sectionHeader}>Holdings Breakdown</h3>

@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
 import { useContext } from "react";
-
+import TickerBanner from "../components/TickerBanner";
 export default function HomePage() {
   const [ticker, setTicker] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const { theme } = useContext(ThemeContext);
   const darkMode = theme === "dark";
+  const storedUsername = localStorage.getItem("username");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,42 +22,55 @@ export default function HomePage() {
     navigate(`/orderbook/${trimmedTicker}`);
   };
 
-  return (
-    <div
-      className={`h-screen w-screen font-[Rajdhani] flex flex-col items-center justify-center relative px-4 transition-all ${
-        darkMode ? "text-[#E0E6F1] bg-[#0B0F2F]" : "text-[#0c1c2f] bg-[#e7f3ff]"
-      }`}
-    >
-      {/* Background Gradient and Blurs */}
-      {darkMode && (
-        <>
-          <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#0B0F2F] via-[#1E2A78] to-[#0B0F2F]" />
-          <div
-            className="absolute top-1/3 left-1/2 w-[500px] h-[500px] rounded-full blur-[160px]"
-            style={{
-              background:
-                "radial-gradient(circle at center, rgba(0,255,255,0.06), transparent 70%)",
-              transform: "translate(-50%, -50%)",
-            }}
-          />
-          <div
-            className="absolute bottom-16 right-16 w-[320px] h-[320px] rounded-full blur-[120px]"
-            style={{
-              background:
-                "radial-gradient(circle at center, rgba(0,140,255,0.05), transparent 80%)",
-            }}
-          />
-        </>
-      )}
+ return (
+  <div
+    className={`h-screen w-screen font-[Rajdhani] relative transition-all ${
+      darkMode ? "text-[#E0E6F1] bg-[#0B0F2F]" : "text-[#0c1c2f] bg-[#e7f3ff]"
+    }`}
+  >
+    <div className="fixed top-16 left-0 w-full z-30">
+      <TickerBanner />
+    </div>
 
-      {/* Form Container */}
+    {darkMode && (
+      <>
+        <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#0B0F2F] via-[#1E2A78] to-[#0B0F2F]" />
+        <div
+          className="absolute top-1/3 left-1/2 w-[500px] h-[500px] rounded-full blur-[160px] z-0"
+          style={{
+            background:
+              "radial-gradient(circle at center, rgba(0,255,255,0.06), transparent 70%)",
+            transform: "translate(-50%, -50%)",
+          }}
+        />
+        <div
+          className="absolute bottom-16 right-16 w-[320px] h-[320px] rounded-full blur-[120px] z-0"
+          style={{
+            background:
+              "radial-gradient(circle at center, rgba(0,140,255,0.05), transparent 80%)",
+          }}
+        />
+      </>
+    )}
+
+    <div className="relative z-10 flex flex-col items-center justify-center h-full px-4">
       <div
-        className={`z-10 backdrop-blur-xl rounded-2xl shadow-[0_0_30px_#2AF5FF11] p-10 max-w-md w-full border transition-all ${
+        className={`backdrop-blur-xl rounded-2xl shadow-[0_0_30px_#2AF5FF11] p-10 max-w-md w-full border transition-all ${
           darkMode
             ? "bg-[#11193F]/80 border-[#2AF5FF33]"
             : "bg-white border-[#b3dfff]"
         }`}
       >
+        {storedUsername && (
+          <h1
+            className={`text-xl font-semibold mb-2 text-center ${
+              darkMode ? "text-[#cceeff]" : "text-[#003366]"
+            }`}
+          >
+            Welcome back, <span className="font-bold">{storedUsername}</span>
+          </h1>
+        )}
+
         <h2
           className={`text-3xl font-semibold mb-6 tracking-wide text-center drop-shadow ${
             darkMode ? "text-[#00FFFF]" : "text-[#007acc]"
@@ -95,5 +109,7 @@ export default function HomePage() {
         )}
       </div>
     </div>
-  );
+  </div>
+);
+
 }

@@ -57,10 +57,10 @@ export default function MyOrdersPage() {
       await axios.post(`http://localhost:5001/api/Orders/cancel/${orderId}`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setCancelStatus(`✅ Order #${orderId} cancelled successfully.`);
+      setCancelStatus(`Order #${orderId} cancelled successfully.`);
       fetchOrders();
     } catch (err) {
-      setCancelStatus(`❌ Failed to cancel order #${orderId}.`);
+      setCancelStatus(`Failed to cancel order #${orderId}.`);
       console.error(err);
     }
   };
@@ -123,7 +123,7 @@ export default function MyOrdersPage() {
                     <td className="px-6 py-4 border-b border-[#00446655]">{getOrderTypeText(order.type)}</td>
                     <td className="px-6 py-4 border-b border-[#00446655]">{order.quantity}</td>
                     <td className="px-6 py-4 border-b border-[#00446655]">
-                      {order.price !== null ? `$${order.price.toFixed(2)}` : "-"}
+                      {order.price !== null ? `₹${order.price.toFixed(2)}` : "-"}
                     </td>
                     <td className="px-6 py-4 border-b border-[#00446655]">{getStatusText(order.status)}</td>
                     <td className="px-6 py-4 border-b border-[#00446655]">

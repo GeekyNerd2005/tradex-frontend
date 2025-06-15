@@ -26,7 +26,6 @@ export default function RegistrationPage() {
         password,
       });
 
-      // After successful registration, navigate to login
       navigate("/login");
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed. Try again.");
@@ -38,89 +37,82 @@ export default function RegistrationPage() {
   return (
     <>
       <link
-        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap"
         rel="stylesheet"
       />
-
       <div
-        className="min-h-screen font-[Orbitron] bg-[#0a0a0a] text-[#f0c4cb] flex items-center justify-center relative overflow-hidden"
-        style={{ fontFamily: "'Orbitron', sans-serif" }}
+        className="min-h-screen font-[Rajdhani] bg-[#060b1b] text-[#c2f5ff] flex items-center justify-center relative overflow-hidden"
+        style={{ fontFamily: "'Rajdhani', sans-serif" }}
       >
-        {/* 🌌 Faint Aurora Layer */}
-        <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#09030f] via-[#120014] to-[#09030f]" />
+        <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#000814] via-[#001d3d] to-[#000814]" />
 
-        {/* ✨ Very subtle, soft aurora blobs */}
         <div
-          className="absolute top-1/3 left-1/2 w-[450px] h-[450px] rounded-full blur-[130px]"
+          className="absolute top-1/3 left-1/2 w-[450px] h-[450px] rounded-full blur-[140px]"
           style={{
             background:
-              "radial-gradient(circle at center, rgba(255,20,60,0.06), transparent 80%)",
+              "radial-gradient(circle, rgba(0, 200, 255, 0.05), transparent 80%)",
             transform: "translate(-50%, -50%)",
-            pointerEvents: "none",
             zIndex: 0,
           }}
         />
         <div
-          className="absolute bottom-10 right-10 w-[300px] h-[300px] rounded-full blur-[110px]"
+          className="absolute bottom-10 right-10 w-[300px] h-[300px] rounded-full blur-[100px]"
           style={{
             background:
-              "radial-gradient(circle at center, rgba(180,0,70,0.04), transparent 80%)",
-            pointerEvents: "none",
+              "radial-gradient(circle, rgba(0, 150, 200, 0.05), transparent 80%)",
             zIndex: 0,
           }}
         />
 
-        {/* 🔻 Tradex Branding */}
         <div className="absolute top-6 left-6 z-10">
-          <h1 className="text-4xl font-bold text-[#ff3366] tracking-widest uppercase drop-shadow-sm">
-            Tradex<span className="text-[#ff99cc]">.</span>
+          <h1 className="text-4xl font-extrabold text-[#00f0ff] tracking-wider uppercase drop-shadow-sm">
+            Tradex<span className="text-[#99f6ff]">.</span>
           </h1>
-          <p className="text-sm text-[#ffc2d9] italic mt-1 opacity-70">
-            Trade smarter. Trade <span className="text-[#ff5588]">Tradex</span>.
+          <p className="text-sm text-[#c2f5ff] italic mt-1 opacity-70">
+            Trade smarter. Trade <span className="text-[#00e0ff]">Tradex</span>.
           </p>
         </div>
 
-        {/* 📝 Registration Form */}
         <form
           onSubmit={handleRegister}
-          className="z-10 bg-[#10000b]/90 border border-[#ff446622] p-10 rounded-xl shadow-md backdrop-blur-md w-full max-w-md"
+          className="z-10 bg-[#031625]/90 border border-[#00d4ff33] p-10 rounded-xl shadow-md backdrop-blur-md w-full max-w-md"
         >
-          <h2 className="text-3xl font-semibold text-center mb-8 text-[#ff6688] tracking-wide uppercase border-b border-[#ff225533] pb-3">
+          <h2 className="text-3xl font-bold text-center mb-8 text-[#00f0ff] tracking-widest uppercase border-b border-[#00f0ff33] pb-3">
             Create Account
           </h2>
 
           {error && (
-            <div className="bg-[#2a0d18] text-red-300 p-2 text-sm rounded border border-red-500 mb-4">
+            <div className="bg-[#0f1e2e] text-[#ff8484] p-2 text-sm rounded border border-red-500 mb-4">
               {error}
             </div>
           )}
 
           <div className="mb-5">
-            <label className="block text-sm mb-1 text-[#ffccd5]">Username</label>
+            <label className="block text-sm mb-1 text-[#c2f5ff]">Username</label>
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              className="w-full px-4 py-2 rounded bg-[#0f0a0c] text-[#ffe6ee] border border-[#ff336622] focus:outline-none focus:ring-1 focus:ring-[#ff4466] placeholder:text-[#ffb3c2]"
+              className="w-full px-4 py-2 rounded bg-[#010c18] text-[#e5faff] border border-[#00f0ff44] focus:outline-none focus:ring-1 focus:ring-[#00f0ff] placeholder:text-[#99dfee]"
               placeholder="your_username"
             />
           </div>
 
           <div className="mb-5">
-            <label className="block text-sm mb-1 text-[#ffccd5]">Password</label>
+            <label className="block text-sm mb-1 text-[#c2f5ff]">Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-2 rounded bg-[#0f0a0c] text-[#ffe6ee] border border-[#ff336622] focus:outline-none focus:ring-1 focus:ring-[#ff4466] placeholder:text-[#ffb3c2]"
+              className="w-full px-4 py-2 rounded bg-[#010c18] text-[#e5faff] border border-[#00f0ff44] focus:outline-none focus:ring-1 focus:ring-[#00f0ff] placeholder:text-[#99dfee]"
               placeholder="••••••••"
             />
           </div>
 
           <div className="mb-8">
-            <label className="block text-sm mb-1 text-[#ffccd5]">
+            <label className="block text-sm mb-1 text-[#c2f5ff]">
               Confirm Password
             </label>
             <input
@@ -128,7 +120,7 @@ export default function RegistrationPage() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
-              className="w-full px-4 py-2 rounded bg-[#0f0a0c] text-[#ffe6ee] border border-[#ff336622] focus:outline-none focus:ring-1 focus:ring-[#ff4466] placeholder:text-[#ffb3c2]"
+              className="w-full px-4 py-2 rounded bg-[#010c18] text-[#e5faff] border border-[#00f0ff44] focus:outline-none focus:ring-1 focus:ring-[#00f0ff] placeholder:text-[#99dfee]"
               placeholder="••••••••"
             />
           </div>
@@ -136,7 +128,7 @@ export default function RegistrationPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-[#ff0033] to-[#cc0055] hover:from-[#cc0055] hover:to-[#ff0033] transition-all duration-300 py-2 rounded-lg font-bold tracking-widest text-black shadow-md"
+            className="w-full bg-gradient-to-r from-[#00e5ff] to-[#009fd9] hover:from-[#009fd9] hover:to-[#00e5ff] transition-all duration-300 py-2 rounded-lg font-bold tracking-widest text-black shadow-lg"
           >
             {loading ? (
               <svg
@@ -162,12 +154,12 @@ export default function RegistrationPage() {
             )}
           </button>
 
-          <p className="text-center mt-4 text-sm text-[#ffc2d9]">
+          <p className="text-center mt-4 text-sm text-[#c2f5ff]">
             Already have an account?{" "}
             <button
               type="button"
               onClick={() => navigate("/login")}
-              className="text-[#ff99cc] hover:underline font-medium"
+              className="text-[#00e0ff] hover:underline font-medium"
             >
               Log In
             </button>

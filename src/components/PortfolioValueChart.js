@@ -18,7 +18,7 @@ const PortfolioValueChart = ({ range = "3mo" }) => {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const userId = localStorage.getItem("userId"); // or pass as prop
+  const userId = localStorage.getItem("userId"); 
 
   useEffect(() => {
   if (!userId) return;
@@ -35,13 +35,13 @@ const PortfolioValueChart = ({ range = "3mo" }) => {
       });
 
       const text = await res.text();
-      console.log("📥 Raw response text:", text);
-      console.log("📊 Status:", res.status);
+      console.log(" Raw response text:", text);
+      console.log(" Status:", res.status);
 
       const data = JSON.parse(text);
       setHistory(data);
     } catch (err) {
-      console.error("❌ Error fetching value history:", err);
+      console.error("Error fetching value history:", err);
     } finally {
       setLoading(false);
     }

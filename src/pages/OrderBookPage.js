@@ -52,23 +52,22 @@ ${currencyMap[currency] || currency || ""} ${amount?.toFixed(2)}`;
     max: null,
   };
 
-  // Chart Initialization
   useEffect(() => {
   const chart = createChart(chartContainerRef.current, {
     width: chartContainerRef.current.clientWidth,
     height: 400,
     layout: {
-      backgroundColor: "#0a0a0a", // Dark terminal background
-      textColor: "#0099aa",       // Neon pink for labels
-      fontFamily: "'Orbitron', 'Fira Code', monospace", // Terminal aesthetic
+      backgroundColor: "#0a0a0a", 
+      textColor: "#0099aa",    
+      fontFamily: "'Orbitron', 'Fira Code', monospace", 
     },
     grid: {
       vertLines: {
-        color: "#1f0022",         // Subtle vertical lines
+        color: "#1f0022",        
         style: 0,
       },
       horzLines: {
-        color: "#1f0022",         // Subtle horizontal lines
+        color: "#1f0022",         
         style: 0,
       },
     },
@@ -99,7 +98,7 @@ ${currencyMap[currency] || currency || ""} ${amount?.toFixed(2)}`;
   });
 
   const series = chart.addLineSeries({
-    color: "#00ffff", // Neon cyan line
+    color: "#00ffff", 
     lineWidth: 3,
     priceLineVisible: true,
     priceLineColor: "#00ffff",
@@ -134,7 +133,7 @@ ${currencyMap[currency] || currency || ""} ${amount?.toFixed(2)}`;
   };
 }, []);
 
-  // Chart Data Fetcher
+ 
   const fetchChart = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -188,7 +187,6 @@ ${currencyMap[currency] || currency || ""} ${amount?.toFixed(2)}`;
     if (symbol) fetchChart();
   }, [symbol, range]);
 
-  // SignalR WebSocket setup
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return;
@@ -237,7 +235,7 @@ useEffect(() => {
       });
 
       setPrice(res.data.price);
-      setCurrency(res.data.currency); // << NEW
+      setCurrency(res.data.currency); 
     } catch (err) {
       console.error("Error fetching price", err);
     }
@@ -277,9 +275,9 @@ useEffect(() => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      setOrderStatus("✅ Order placed!");
+      setOrderStatus("Order placed!");
     } catch (err) {
-      setOrderStatus("❌ Order failed.");
+      setOrderStatus("Order failed.");
     }
   };
 
@@ -293,9 +291,9 @@ useEffect(() => {
       </h2>
 
       <div className="mb-4 text-lg">
-        {price && <p>Current Price: ${price.toFixed(2)}</p>}
-        {hoverPrice && <p>Hovered: ${hoverPrice.toFixed(2)}</p>}
-        {error && <p className="text-red-400">⚠️ {error}</p>}
+        {price && <p>Current Price: ₹{price.toFixed(2)}</p>}
+        {hoverPrice && <p>Hovered: ₹{hoverPrice.toFixed(2)}</p>}
+        {error && <p className="text-red-400">{error}</p>}
       </div>
 
       <button
@@ -306,7 +304,6 @@ useEffect(() => {
       </button>
       
       <div className="md:flex md:gap-8">
-  {/* Chart Section */}
   <div className="flex-1 mb-6 md:mb-0">
 <div
   ref={chartContainerRef}
@@ -315,9 +312,7 @@ useEffect(() => {
 />
   </div>
 
-  {/* Right Panel */}
   <div className="w-full md:w-[400px] flex flex-col gap-6">
-    {/* Place Order */}
     <div className="bg-[#161c29] p-5 rounded-lg shadow-inner border border-neutral-700">
       <h3 className="text-lg font-orbitron text-slate-300 mb-3 tracking-wide">
         Place Order
@@ -374,7 +369,6 @@ useEffect(() => {
       )}
     </div>
 
-    {/* Order Book */}
     <div className="bg-[#161c29] p-5 rounded-lg shadow-inner border border-neutral-700">
       <h3 className="text-lg font-semibold text-slate-300 mb-3 tracking-wide">
         Order Book
@@ -397,7 +391,7 @@ useEffect(() => {
                 {data.length > 0 ? (
                   data.map((row, idx) => (
                     <tr key={idx}>
-                      <td>${row.price}</td>
+                      <td>₹{row.price}</td>
                       <td>{row.quantity}</td>
                     </tr>
                   ))

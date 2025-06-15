@@ -9,7 +9,7 @@ const WinLossStats = () => {
   useEffect(() => {
     const fetchStats = async () => {
       const token = localStorage.getItem("token");
-      const userId = localStorage.getItem("userId"); // Make sure this is stored at login
+      const userId = localStorage.getItem("userId"); 
 
       const res = await fetch(
         `http://localhost:5001/api/portfolio/winloss/${userId}`,
@@ -69,4 +69,3 @@ const WinLossStats = () => {
 };
 
 export default WinLossStats;
-//add winloss later

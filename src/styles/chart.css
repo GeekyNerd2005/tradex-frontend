@@ -7,19 +7,6 @@
   --border-color: #333;
   --accent-color: #ffd700;
   --accent-glow: 0 0 8px rgba(255, 215, 0, 0.5);
-  --success: #26a69a;
-  --danger: #ef5350;
-}
-
-body.light-mode {
-  --bg-color: #f5f5f5;
-  --text-color: #111;
-  --button-bg: #ddd;
-  --button-hover: #ccc;
-  --button-active: #0077cc;
-  --border-color: #bbb;
-  --accent-color: #ff9900;
-  --accent-glow: 0 0 6px rgba(255, 153, 0, 0.4);
 }
 
 .chart-page {
@@ -29,7 +16,7 @@ body.light-mode {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  font-family: 'Orbitron', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Orbitron', 'Segoe UI', sans-serif;
   transition: all 0.3s ease-in-out;
 }
 
@@ -42,6 +29,12 @@ body.light-mode {
   gap: 0.75rem;
 }
 
+.chart-header h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-shadow: 0 0 4px var(--accent-color), 0 0 8px var(--accent-color);
+}
+
 .range-buttons {
   display: flex;
   flex-wrap: wrap;
@@ -52,26 +45,25 @@ body.light-mode {
   background-color: var(--button-bg);
   color: var(--text-color);
   border: 1px solid var(--border-color);
-  padding: 0.5rem 1.2rem;
+  padding: 0.5rem 1rem;
   border-radius: 6px;
   font-size: 0.92rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.25s ease;
-  position: relative;
 }
 
 .range-buttons button:hover {
   background-color: var(--button-hover);
   transform: translateY(-1px);
-  box-shadow: 0 0 6px rgba(36, 1, 36, 0.826);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.1);
 }
 
 .range-buttons .active {
   background-color: var(--button-active);
   color: #fff;
   font-weight: 600;
-  box-shadow: 0 0 10px rgba(38, 166, 154, 0.4);
+  box-shadow: 0 0 10px rgba(38, 166, 154, 0.5);
 }
 
 .controls {
@@ -89,17 +81,14 @@ body.light-mode {
   font-size: 0.85rem;
   cursor: pointer;
   transition: all 0.25s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
 }
 
 .controls button:hover {
   background-color: var(--button-hover);
-  box-shadow: 0 0 5px rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.08);
 }
 
-.controls .indicator-toggle.active {
+.indicator-toggle.active {
   background-color: var(--button-active);
   color: #fff;
   font-weight: 600;
@@ -107,116 +96,29 @@ body.light-mode {
 }
 
 .chart-container {
-  background-color: #0d0d0d;
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.03);
   position: relative;
-  height: 75vh;
-}
-
-.spinner-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(13, 13, 13, 0.7);
-  z-index: 999;
-}
-
-.spinner {
-  width: 36px;
-  height: 36px;
-  border: 4px solid var(--border-color);
-  border-top: 4px solid var(--button-active);
-  border-radius: 50%;
-  animation: spin 0.9s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/* Tablets */
-@media (max-width: 768px) {
-  .chart-page {
-    padding: 1rem;
-  }
-
-  .chart-header {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .range-buttons button {
-    flex: 1 1 30%;
-    padding: 0.4rem 0.6rem;
-    font-size: 0.85rem;
-  }
-
-  .controls {
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .controls button {
-    flex: 1 1 48%;
-    justify-content: center;
-    font-size: 0.8rem;
-  }
-
-  .chart-container {
-    height: 65vh;
-  }
-}
-
-/* Phones */
-@media (max-width: 480px) {
-  .range-buttons button {
-    flex: 1 1 45%;
-    font-size: 0.8rem;
-    padding: 0.4rem;
-  }
-
-  .controls button {
-    font-size: 0.75rem;
-    padding: 0.35rem 0.5rem;
-  }
-
- .chart-container {
-  position: relative; /* Needed for spinner-overlay positioning */
   background-color: #0d0d0d;
   border: 1px solid var(--border-color);
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 0 12px rgba(255, 255, 255, 0.03);
+  height: 500px;
 }
 
-/* Full overlay to center spinner */
+/* Spinner overlay */
 .spinner-overlay {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(13, 13, 13, 0.6); /* semi-transparent dark */
+  background-color: rgba(13, 13, 13, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10;
 }
 
-/* Spinner glow styling */
 .spinner {
   width: 36px;
   height: 36px;
@@ -231,9 +133,15 @@ body.light-mode {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-.chart-header h2,
-.range-buttons button.active {
-  text-shadow: 0 0 4px var(--accent-color), 0 0 8px var(--accent-color);
-}
 
+/* Responsive design */
+@media (max-width: 768px) {
+  .chart-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .chart-container {
+    height: 65vh;
+  }
 }

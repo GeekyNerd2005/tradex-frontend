@@ -18,7 +18,16 @@ module.exports = {
         neon: "0 0 15px #2AF5FF66",
         insetNeon: "inset 0 0 10px #2AF5FF44",
       },
+      animation: {
+        marquee: "marquee 60s linear infinite",
+      },
+      keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(100%)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
+      },
     },
   },
   plugins: [],
-}
+};

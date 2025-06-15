@@ -52,7 +52,7 @@ export default function MyTradesPage() {
   };
 
   const avgBuyPrice = (symbol) => {
-    const buys = trades.filter(t => t.symbol === symbol && t.side === 0);
+    const buys = trades.filter(t => t.symbol === symbol && t.side === "Buy");
     if (buys.length === 0) return 0;
     const total = buys.reduce((acc, t) => acc + t.price * t.quantity, 0);
     const qty = buys.reduce((acc, t) => acc + t.quantity, 0);
@@ -64,11 +64,11 @@ export default function MyTradesPage() {
     const rows = filtered.map(t => [
       t.id,
       t.symbol,
-      t.side === 0 ? "Buy" : "Sell",
+      t.side="Buy" ? "Buy" : "Sell",
       t.price,
       t.quantity,
       new Date(t.executedAt).toLocaleString(),
-      t.side === 1 ? `$${((t.price - avgBuyPrice(t.symbol)) * t.quantity).toFixed(2)}` : "-"
+      t.side === "Sell" ? `₹${((t.price - avgBuyPrice(t.symbol)) * t.quantity).toFixed(2)}` : "-"
     ]);
 
     const csv = [headers, ...rows]
@@ -83,6 +83,9 @@ export default function MyTradesPage() {
     a.click();
     URL.revokeObjectURL(url);
   };
+useEffect(() => {
+  console.log("Fetched trades:", trades.map(t => ({ id: t.id, side: t.side })));
+}, [trades]);
 
   return (
     <>
@@ -290,20 +293,20 @@ export default function MyTradesPage() {
                 </thead>
                 <tbody>
                   {filtered.map((t) => {
-                    const isSell = t.side === 1;
+                    const isSell = t.side === "Sell";
                     const pnl = isSell ? (t.price - avgBuyPrice(t.symbol)) * t.quantity : null;
                     return (
                       <tr key={t.id}>
                         <td>{t.id}</td>
                         <td>{t.symbol}</td>
-                        <td className={t.side === 0 ? "buy-side" : "sell-side"}>
-                          {t.side === 0 ? "Buy" : "Sell"}
+                        <td className={t.side === "Buy" ? "buy-side" : "sell-side"}>
+                          {t.side}
                         </td>
-                        <td>${t.price.toFixed(2)}</td>
+                        <td>₹{t.price.toFixed(2)}</td>
                         <td>{t.quantity}</td>
                         <td>{new Date(t.executedAt).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })}</td>
                         <td className={isSell && pnl !== null ? (pnl >= 0 ? "pnl-positive" : "pnl-negative") : "pnl-neutral"}>
-                          {isSell && pnl !== null ? `$${pnl.toFixed(2)}` : "-"}
+                          {isSell && pnl !== null ? `₹${pnl.toFixed(2)}` : "-"}
                         </td>
                       </tr>
                     );
